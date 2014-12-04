@@ -6,6 +6,6 @@ package ro.tudorluca.gpstracks.webapi;
 public class GPSTracksApplication extends BaseApplication {
 
     public static void main(String[] args) throws Exception {
-        new GPSTracksApplication().run("server", System.getProperty("dropwizard.config"));
+        new GPSTracksApplication().run(new String[]{"server", System.getProperty("dropwizard.config")});
     }
 }

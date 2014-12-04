@@ -33,15 +33,21 @@ public trait PositionRepository {
         val COL_DATE = "date"
     }
 
-    SqlUpdate(SQL_INSERT) GetGeneratedKeys
-    fun save(BindBean("pos") position: Position): Long
-
-    SqlQuery("SELECT * FROM Position where id = :id")
-    fun findById(Bind("id") id: Long): Position
+    SqlQuery("SELECT * FROM Position WHERE id = :it")
+    fun findById(Bind id: Long): Position?
 
     SqlQuery("SELECT * FROM Position")
     fun findAll(): List<Position>
 
     SqlQuery("SELECT * FROM Position WHERE date >= :start AND date <= :end and userId = :userId")
     fun findAllInIntervalByUserId(start: Date, end: Date, Bind("userId") userId: Long): List<Position>
+
+    SqlUpdate(SQL_INSERT) GetGeneratedKeys
+    fun save(BindBean("pos") position: Position): Long
+
+    SqlUpdate("DELETE FROM Position WHERE id = :it")
+    fun delete(Bind id: Long)
+
+    SqlUpdate("DELETE FROM Position WHERE date >= :start AND date <= :end and userId = :userId")
+    fun deletePositionsInIntervalByUserId(Bind("start") start: Date, Bind("end") end: Date, Bind("userId") userId: Long)
 }
