@@ -24,7 +24,7 @@ public class GPSTracksModule : AbstractModule() {
     fun providesDBIFactory(conf: GPSTracksConfiguration, env: Environment): DBI = DBIFactory().build(env, conf.dataSourceFactory, "db")
 
     Provides
-    fun providesPositionRepository(dbi: DBI): PositionRepository = dbi.open(javaClass<PositionRepository>())
+    fun providesPositionRepository(dbi: DBI): PositionRepository = dbi.onDemand(javaClass<PositionRepository>())
 
     Provides
     fun providesDefaultValidator(env: Environment): Validator = env.getValidator()

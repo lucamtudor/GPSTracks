@@ -4,9 +4,9 @@ import io.dropwizard.setup.Environment
 import io.dropwizard.Application
 import io.dropwizard.setup.Bootstrap
 import com.hubspot.dropwizard.guice.GuiceBundle
-import com.fasterxml.jackson.databind.SerializationFeature
-import com.fasterxml.jackson.databind.ObjectMapper
-import io.dropwizard.jersey.jackson.JacksonMessageBodyProvider
+import com.fasterxml.jackson.databind.module.SimpleModule
+import ro.tudorluca.gpstracks.webapi.jackson.DateAsTimestampSerializer
+import java.util.Date
 
 /**
  * Created by Tudor Luca on 03/12/14.
@@ -24,9 +24,10 @@ public open class BaseApplication : Application<GPSTracksConfiguration>() {
     }
 
     override fun run(conf: GPSTracksConfiguration, env: Environment) {
-        val objectMapper = ObjectMapper().configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, true)
+        val dateModule = SimpleModule("DateModule")
+        dateModule.addSerializer(javaClass<Date>(), DateAsTimestampSerializer())
 
-        env.jersey().register(JacksonMessageBodyProvider(objectMapper, env.getValidator()))
+        env.getObjectMapper().registerModule(dateModule)
     }
 }
 

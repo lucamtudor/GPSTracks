@@ -19,7 +19,12 @@ public class PositionServiceImpl [Inject](val positionRepository: PositionReposi
             positionRepository.findAllInIntervalByUserId(start, end, userId)
 
     override fun savePosition(position: Position): Position {
-        val id = positionRepository.save(position)
+        var id: Long
+        if (position.id != null && getOne(position.id!!) != null) {
+            id = positionRepository.save(position)
+        } else {
+            id = positionRepository.create(position)
+        }
         val savedPosition = getOne(id)
         if (savedPosition == null) {
             throw RuntimeException("Position $position could not be saved")

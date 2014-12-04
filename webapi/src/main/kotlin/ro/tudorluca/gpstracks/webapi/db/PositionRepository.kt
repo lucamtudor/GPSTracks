@@ -14,40 +14,51 @@ public trait PositionRepository {
 
     class object {
 
-        val SQL_INSERT = """
-                    INSERT INTO `TrackGPS`.`Position` (
-                        `userId`,
-                        `latitude`,
-                        `longitude`,
-                        `date`
-                    )
-                    VALUES (
-                        :pos.userId, :pos.latitude, :pos.longitude, :pos.date
-                    );"""
-
+        val TABLE_NAME = "TrackGPS.Position"
         val COL_ID = "id"
         val COL_DATE_CREATED = "dateCreated"
         val COL_USER_ID = "userId"
         val COL_LATITUDE = "latitude"
         val COL_LONGITUDE = "longitude"
         val COL_DATE = "date"
+
+        val SQL_INSERT = """
+                    INSERT INTO $TABLE_NAME (
+                        $COL_USER_ID,
+                        $COL_LATITUDE,
+                        $COL_LONGITUDE,
+                        $COL_DATE
+                    )
+                    VALUES (
+                        :pos.userId, :pos.latitude, :pos.longitude, :pos.date
+                    );"""
+
+        val SQL_UPDATE = """
+                    UPDATE $TABLE_NAME
+                    SET $COL_DATE_CREATED = :pos.dateCreated, $COL_USER_ID = :pos.userId,
+                        $COL_LATITUDE = :pos.latitude, $COL_LONGITUDE = :pos.longitude, $COL_DATE = :pos.date
+                    WHERE $COL_ID = :pos.id
+                    """
     }
 
-    SqlQuery("SELECT * FROM Position WHERE id = :it")
+    SqlQuery("SELECT * FROM $TABLE_NAME WHERE $COL_ID = :it")
     fun findById(Bind id: Long): Position?
 
-    SqlQuery("SELECT * FROM Position")
+    SqlQuery("SELECT * FROM $TABLE_NAME")
     fun findAll(): List<Position>
 
-    SqlQuery("SELECT * FROM Position WHERE date >= :start AND date <= :end and userId = :userId")
+    SqlQuery("SELECT * FROM $TABLE_NAME WHERE $COL_DATE >= :start AND $COL_DATE <= :end and $COL_USER_ID = :userId")
     fun findAllInIntervalByUserId(start: Date, end: Date, Bind("userId") userId: Long): List<Position>
 
     SqlUpdate(SQL_INSERT) GetGeneratedKeys
+    fun create(BindBean("pos") position: Position): Long
+
+    SqlUpdate(SQL_UPDATE)
     fun save(BindBean("pos") position: Position): Long
 
-    SqlUpdate("DELETE FROM Position WHERE id = :it")
+    SqlUpdate("DELETE FROM $TABLE_NAME WHERE $COL_ID = :it")
     fun delete(Bind id: Long)
 
-    SqlUpdate("DELETE FROM Position WHERE date >= :start AND date <= :end and userId = :userId")
+    SqlUpdate("DELETE FROM $TABLE_NAME WHERE $COL_DATE >= :start AND $COL_DATE <= :end and $COL_USER_ID = :userId")
     fun deletePositionsInIntervalByUserId(Bind("start") start: Date, Bind("end") end: Date, Bind("userId") userId: Long)
 }
