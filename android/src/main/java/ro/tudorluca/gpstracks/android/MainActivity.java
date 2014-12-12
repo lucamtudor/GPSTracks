@@ -19,8 +19,6 @@ import org.json.JSONObject;
 
 import java.util.Date;
 
-import ro.tudorluca.gpstracks.webapi.core.Position;
-
 public class MainActivity extends Activity {
 
     @Override
@@ -48,9 +46,10 @@ public class MainActivity extends Activity {
         position.setUserId(1);
 
         ObjectMapper mapper = new ObjectMapper();
-
         try {
-            JSONObject jsonObject = new JSONObject(mapper.writeValueAsString(position));
+            String positionString = mapper.writeValueAsString(position);
+
+            JSONObject jsonObject = new JSONObject(positionString);
             JsonObjectRequest positionRequest = new JsonObjectRequest(Request.Method.POST, url, jsonObject, new Response.Listener<JSONObject>() {
                 @Override
                 public void onResponse(JSONObject response) {
@@ -64,7 +63,7 @@ public class MainActivity extends Activity {
             });
 
             queue.add(positionRequest);
-        } catch (JSONException | JsonProcessingException e) {
+        } catch (JsonProcessingException | JSONException e) {
             e.printStackTrace();
         }
 
