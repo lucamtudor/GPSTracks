@@ -21,10 +21,13 @@ import java.util.Date;
 
 public class MainActivity extends Activity {
 
+    RequestQueue queue;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        queue = Volley.newRequestQueue(this);
 
         findViewById(R.id.post_location).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -35,9 +38,8 @@ public class MainActivity extends Activity {
     }
 
     private void postLocation() {
-        RequestQueue queue = Volley.newRequestQueue(this);
 
-        String url = "http://localhost:8080/position";
+        String url = "http://192.168.2.3:8080/position";
 
         Position position = new Position();
         position.setDate(new Date());
@@ -58,7 +60,8 @@ public class MainActivity extends Activity {
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Log.e("Position Error", error.getMessage());
+//                    Log.e("Position Error", error.getMessage());
+                    error.getCause().printStackTrace();
                 }
             });
 
