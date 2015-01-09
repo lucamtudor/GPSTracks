@@ -6,7 +6,7 @@ version = '0.1.0'
 
 mainClassName = 'ro.tudorluca.gpstracks.webapi.GPSTracksApplication'
 
-//ext.dropwizard_version = '0.8.0-rc1'
+//ext.dropwizard_version = '0.8.0-rc2-SNAPSHOT'
 ext.dropwizard_version = '0.7.1'
 
 configurations {
@@ -29,6 +29,7 @@ dependencies {
     }
     compile "io.dropwizard:dropwizard-hibernate:${dropwizard_version}"
     compile "io.dropwizard:dropwizard-db:${dropwizard_version}"
+    compile "io.dropwizard:dropwizard-assets:${dropwizard_version}"
     compile "io.dropwizard:dropwizard-jdbi:${dropwizard_version}"
 
     compile 'mysql:mysql-connector-java:5.1.34'

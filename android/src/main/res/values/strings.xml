@@ -2,6 +2,20 @@
 <resources>
 
     <string name="app_name">GPSTracks</string>
-    <string name="hello_world">Hello world!</string>
+
+    <string name="latitude_label">Latitude: </string>
+    <string name="longitude_label">Longitude: </string>
+
+    <string name="start_updates">Start updates</string>
+    <string name="stop_updates">Stop updates</string>
+
+    <string name="last_update_time_label">Last location update time: </string>
+
+    <string name="location_updated_message">Location updated</string>
+    <string name="location_sent_message">Location sent successfully</string>
+    <string name="location_send_error">Error sending location</string>
+    <string name="locate_now">Locate now!</string>
+    <string name="user_id">User Id: </string>
+    <string name="location_unavailable">Location unavailable. Please try again later.</string>
 
 </resources>

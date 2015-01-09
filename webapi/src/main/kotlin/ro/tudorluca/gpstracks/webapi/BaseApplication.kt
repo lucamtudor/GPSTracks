@@ -7,6 +7,7 @@ import com.hubspot.dropwizard.guice.GuiceBundle
 import com.fasterxml.jackson.databind.module.SimpleModule
 import ro.tudorluca.gpstracks.webapi.jackson.DateAsTimestampSerializer
 import java.util.Date
+import io.dropwizard.assets.AssetsBundle
 
 /**
  * Created by Tudor Luca on 03/12/14.
@@ -21,6 +22,7 @@ public open class BaseApplication : Application<GPSTracksConfiguration>() {
                 .build()
 
         bootstrap.addBundle(guiceBundle)
+        bootstrap.addBundle(AssetsBundle("/assets", "/", "index.html"))
     }
 
     override fun run(conf: GPSTracksConfiguration, env: Environment) {
@@ -28,6 +30,7 @@ public open class BaseApplication : Application<GPSTracksConfiguration>() {
         dateModule.addSerializer(javaClass<Date>(), DateAsTimestampSerializer())
 
         env.getObjectMapper().registerModule(dateModule)
+        env.jersey().setUrlPattern("/api/*")
     }
 }
 
